@@ -99,32 +99,43 @@ Widget buildPosts(List<TaskList> posts) {
               return Column(
                 children: [
                   SizedBox(
-                    height: 50,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
+                    height: 80,
+                    child: Column(
                       children: [
-                        IconButton(
-                          icon: const Icon(Icons.arrow_back),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        Column(
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text(
-                              "Tasks in ${post.name!}",
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
+                            IconButton(
+                              icon: const Icon(Icons.arrow_back),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
                             ),
-                            Text(post.desc!),
+                            Text(
+                              post.name!,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              post.desc!,
+                              style: const TextStyle(
+                                  color: Color.fromARGB(255, 88, 88, 88)),
+                            ),
                           ],
                         ),
                       ],
                     ),
                   ),
                   SizedBox(
-                    height: (screenSize.height - 50),
+                    height: (screenSize.height - 80),
                     child: FutureBuilder<List<Task>>(
                       future: futureTask,
                       builder: (context, snapshot) {
