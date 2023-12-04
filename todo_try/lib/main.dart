@@ -187,10 +187,56 @@ Widget buildTasks(List<Task> posts) {
     itemCount: posts.length,
     itemBuilder: (context, index) {
       final post = posts[index];
+      var tskColor = const Color.fromARGB(255, 240, 239, 239);
+
       return GestureDetector(
-        onTap: () => {},
+        onTap: () => {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  scrollable: true,
+                  title: const Text("Login"),
+                  content: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Form(
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              labelText: "Name",
+                              icon: Icon(Icons.account_box),
+                            ),
+                          ),
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              labelText: "Email",
+                              icon: Icon(Icons.email),
+                            ),
+                          ),
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              labelText: "Message",
+                              icon: Icon(Icons.message),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  actions: [
+                    ElevatedButton(
+                      child: const Text("submit"),
+                      onPressed: () {
+                        // your code
+                      },
+                    ),
+                  ],
+                );
+              })
+        },
         child: Container(
-          color: Colors.grey.shade300,
+          color: tskColor,
           margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 8),
           height: 70,
@@ -199,12 +245,31 @@ Widget buildTasks(List<Task> posts) {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                  child: Text(
-                post.title!,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                  child: Row(
+                children: [
+                  Card(
+                    elevation: 0,
+                    color: Colors.transparent,
+                    child: Checkbox(
+                        value: post.isDone!,
+                        onChanged: (bool? value) {
+                          updateTask(post.id!, post.isDone!);
+                        }),
+                  ),
+                  Text(
+                    post.title!,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
               )),
-              const SizedBox(width: 10),
-              Expanded(child: Text(post.desc!)),
+              Row(
+                children: [
+                  const SizedBox(
+                    width: 40,
+                  ),
+                  Expanded(child: Text(post.desc!)),
+                ],
+              ),
             ],
           ),
         ),

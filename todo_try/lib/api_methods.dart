@@ -3,12 +3,14 @@ import './models.dart';
 import 'dart:io';
 import 'dart:convert';
 
+const DOMAIN = "http://127.0.0.1:8000/api";
+const TOKEN = "Token aaad5afa5807d44a576332c389019929977f6bc5";
+
 Future<List<TaskList>> fetchTaskList() async {
   final req = await http.get(
-    Uri.parse('http://127.0.0.1:8000/api/tasklist/'),
+    Uri.parse('$DOMAIN/tasklist/'),
     headers: {
-      HttpHeaders.authorizationHeader:
-          'Token aaad5afa5807d44a576332c389019929977f6bc5',
+      HttpHeaders.authorizationHeader: TOKEN,
     },
   );
   final List body = json.decode(req.body);
@@ -17,12 +19,27 @@ Future<List<TaskList>> fetchTaskList() async {
 
 Future<List<Task>> fetchTask(int id) async {
   final req = await http.get(
-    Uri.parse("http://127.0.0.1:8000/api/task/tasklist/${id}"),
+    Uri.parse("$DOMAIN/task/tasklist/${id}"),
     headers: {
-      HttpHeaders.authorizationHeader:
-          'Token aaad5afa5807d44a576332c389019929977f6bc5',
+      HttpHeaders.authorizationHeader: TOKEN,
     },
   );
   final List body = json.decode(req.body);
   return body.map((e) => Task.fromJson(e)).toList();
+}
+
+Future<void> updateTask(int id, bool status) async {
+  var change = "true";
+  if (status) {
+    change = "false";
+  }
+  await http.patch(
+    Uri.parse("$DOMAIN/task/$id/"),
+    body: {
+      "is_done": change,
+    },
+    headers: {
+      HttpHeaders.authorizationHeader: TOKEN,
+    },
+  );
 }
